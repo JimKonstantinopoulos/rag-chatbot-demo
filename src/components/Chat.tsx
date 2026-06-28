@@ -14,6 +14,26 @@ interface Turn {
   sources: Source[];
 }
 
+function UserAvatar() {
+  return (
+    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white shadow">
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+        <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5Z" />
+      </svg>
+    </div>
+  );
+}
+
+function BotAvatar() {
+  return (
+    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow">
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+        <path d="M12 2 9.9 7.9 4 10l5.9 2.1L12 18l2.1-5.9L20 10l-5.9-2.1L12 2Z" />
+      </svg>
+    </div>
+  );
+}
+
 export function Chat({ docId }: { docId: string }) {
   const [question, setQuestion] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -54,59 +74,80 @@ export function Chat({ docId }: { docId: string }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-5">
         {turns.length === 0 && (
-          <p className="text-sm text-slate-400">
-            Ask anything about the document. Answers come only from the source,
-            with citations.
-          </p>
+          <div className="flex items-start gap-2">
+            <BotAvatar />
+            <div className="rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-sm text-slate-300">
+              Ask me anything about the document. I only answer from the source,
+              with citations.
+            </div>
+          </div>
         )}
 
         {turns.map((turn, i) => (
-          <div key={i} className="flex flex-col gap-2">
-            <div className="self-end rounded-2xl rounded-br-sm bg-indigo-600 px-4 py-2 text-sm text-white">
-              {turn.question}
+          <div key={i} className="flex flex-col gap-4">
+            {/* user message */}
+            <div className="flex items-start justify-end gap-2">
+              <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-indigo-600 px-4 py-2.5 text-sm text-white shadow-sm">
+                {turn.question}
+              </div>
+              <UserAvatar />
             </div>
-            <div className="self-start rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-sm leading-relaxed text-slate-100">
-              <p className="whitespace-pre-wrap">{turn.answer}</p>
-              {turn.sources.length > 0 && (
-                <div className="mt-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setOpenSources((cur) => (cur === i ? null : i))
-                    }
-                    className="text-xs font-medium text-indigo-300 hover:underline"
-                  >
-                    {openSources === i ? "Hide sources" : `Sources (${turn.sources.length})`}
-                  </button>
-                  {openSources === i && (
-                    <ul className="mt-2 flex flex-col gap-2">
-                      {turn.sources.map((s) => (
-                        <li
-                          key={s.index}
-                          className="rounded-lg bg-slate-900/70 px-3 py-2 text-xs text-slate-300"
-                        >
-                          <span className="mr-1 font-semibold text-indigo-300">
-                            [{s.index}]
-                          </span>
-                          <span className="text-slate-500">
-                            {(s.similarity * 100).toFixed(0)}% match
-                          </span>
-                          <p className="mt-1 text-slate-300">{s.content}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              )}
+
+            {/* assistant message */}
+            <div className="flex items-start gap-2">
+              <BotAvatar />
+              <div className="max-w-[80%] rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-sm leading-relaxed text-slate-100 shadow-sm">
+                <p className="whitespace-pre-wrap">{turn.answer}</p>
+                {turn.sources.length > 0 && (
+                  <div className="mt-2 border-t border-slate-700/60 pt-2">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setOpenSources((cur) => (cur === i ? null : i))
+                      }
+                      className="text-xs font-medium text-indigo-300 hover:underline"
+                    >
+                      {openSources === i
+                        ? "Hide sources"
+                        : `📎 Sources (${turn.sources.length})`}
+                    </button>
+                    {openSources === i && (
+                      <ul className="mt-2 flex flex-col gap-2">
+                        {turn.sources.map((s) => (
+                          <li
+                            key={s.index}
+                            className="rounded-lg bg-slate-900/70 px-3 py-2 text-xs text-slate-300"
+                          >
+                            <span className="mr-1 font-semibold text-indigo-300">
+                              [{s.index}]
+                            </span>
+                            <span className="text-slate-500">
+                              {(s.similarity * 100).toFixed(0)}% match
+                            </span>
+                            <p className="mt-1 text-slate-300">{s.content}</p>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ))}
 
         {busy && (
-          <div className="self-start rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-sm text-slate-400">
-            Thinking…
+          <div className="flex items-start gap-2">
+            <BotAvatar />
+            <div className="rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-sm text-slate-400">
+              <span className="inline-flex gap-1">
+                <span className="h-2 w-2 animate-bounce rounded-full bg-slate-500 [animation-delay:-0.2s]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-slate-500 [animation-delay:-0.1s]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-slate-500" />
+              </span>
+            </div>
           </div>
         )}
         <div ref={endRef} />

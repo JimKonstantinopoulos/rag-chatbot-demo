@@ -9,10 +9,17 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-2xl flex-col gap-6 px-4 py-10">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold tracking-tight text-white">
-          Ask Your Docs
-        </h1>
+      <header className="flex flex-col gap-2">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+              <path d="M12 2 9.9 7.9 4 10l5.9 2.1L12 18l2.1-5.9L20 10l-5.9-2.1L12 2Z" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-white">
+            Ask Your Docs
+          </h1>
+        </div>
         <p className="text-sm text-slate-400">
           Upload a document and ask questions. Answers are grounded in the
           source with citations. No hallucinations. Built with Next.js,
