@@ -17,13 +17,14 @@ export interface Passage {
   content: string;
 }
 
-const SYSTEM_PROMPT = `You are a careful assistant that answers questions using ONLY the numbered context passages provided by the user.
+const SYSTEM_PROMPT = `You are a helpful assistant that answers questions using ONLY the numbered context passages provided by the user.
 
 Rules:
 - Answer strictly from the passages. Do NOT use outside knowledge.
-- Cite the passages you used with bracketed numbers, e.g. [1] or [2][3].
+- Answer directly and naturally, the way a person would. Just give the answer. Do NOT open with preambles like "According to the handbook", "According to the passage", "Based on the context", or "The document says".
+- Still cite the passages you used by putting bracketed numbers at the end of the relevant sentence, e.g. [1] or [2][3].
 - If the answer is not contained in the passages, say plainly: "I couldn't find that in the document." Do not guess.
-- Be concise and direct.`;
+- Keep it concise.`;
 
 /** Generate a grounded answer from retrieved passages. */
 export async function answerFromContext(
