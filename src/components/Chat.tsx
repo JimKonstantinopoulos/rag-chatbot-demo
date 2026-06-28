@@ -57,7 +57,7 @@ export function Chat({ docId }: { docId: string }) {
       <div className="flex flex-col gap-4">
         {turns.length === 0 && (
           <p className="text-sm text-slate-400">
-            Ask anything about the document. Answers come only from the source —
+            Ask anything about the document. Answers come only from the source,
             with citations.
           </p>
         )}

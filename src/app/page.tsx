@@ -15,7 +15,7 @@ export default function Home() {
         </h1>
         <p className="text-sm text-slate-400">
           Upload a document and ask questions. Answers are grounded in the
-          source with citations — no hallucinations. Built with Next.js,
+          source with citations. No hallucinations. Built with Next.js,
           Supabase pgvector, and Claude.
         </p>
       </header>

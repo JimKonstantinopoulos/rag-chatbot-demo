@@ -1,6 +1,6 @@
-# Ask Your Docs — RAG Chatbot
+# Ask Your Docs | RAG Chatbot
 
-Upload a document, ask questions, and get answers **grounded in the source with citations** — not hallucinations. A small but production-shaped Retrieval-Augmented Generation (RAG) app.
+Upload a document, ask questions, and get answers **grounded in the source with citations**, not hallucinations. A small but production-shaped Retrieval-Augmented Generation (RAG) app.
 
 > **Why this exists:** most "AI chatbots" happily invent answers. This one retrieves the relevant passages from *your* document first, answers only from them, cites what it used, and says *"I couldn't find that in the document"* when the answer isn't there.
 
@@ -36,7 +36,7 @@ Ask a question ──► Embed question ──► Vector similarity search (top-
 | Answer generation | **Anthropic Claude** (`claude-haiku-4-5` by default, configurable) |
 | Deploy | **Vercel** |
 
-> Embeddings use OpenAI because Anthropic doesn't ship an embeddings API — pairing OpenAI embeddings with Claude generation is the standard RAG setup.
+> Embeddings use OpenAI because Anthropic doesn't ship an embeddings API. Pairing OpenAI embeddings with Claude generation is the standard RAG setup.
 
 ## Run it locally
 
