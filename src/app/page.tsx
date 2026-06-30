@@ -5,7 +5,7 @@ import { Uploader, type IngestedDoc } from "@/components/Uploader";
 import { Chat } from "@/components/Chat";
 import { SAMPLE_DOC } from "@/lib/sample";
 
-type LoadedDoc = IngestedDoc & { suggestions?: string[] };
+type LoadedDoc = IngestedDoc & { suggestions?: string[]; documentText?: string };
 
 export default function Home() {
   const [doc, setDoc] = useState<LoadedDoc | null>(null);
@@ -16,6 +16,7 @@ export default function Home() {
       filename: SAMPLE_DOC.filename,
       chunks: SAMPLE_DOC.chunks,
       suggestions: SAMPLE_DOC.questions,
+      documentText: SAMPLE_DOC.text,
     });
   }
 
@@ -58,6 +59,16 @@ export default function Home() {
               New document
             </button>
           </div>
+          {doc.documentText && (
+            <details className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-3 text-sm">
+              <summary className="cursor-pointer font-medium text-indigo-300">
+                View the sample document
+              </summary>
+              <pre className="mt-3 max-h-72 overflow-auto whitespace-pre-wrap font-sans text-xs leading-relaxed text-slate-300">
+                {doc.documentText}
+              </pre>
+            </details>
+          )}
           <Chat docId={doc.docId} suggestions={doc.suggestions} />
         </section>
       )}
