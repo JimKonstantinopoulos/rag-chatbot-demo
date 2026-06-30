@@ -10,8 +10,10 @@ export interface IngestedDoc {
 
 export function Uploader({
   onIngested,
+  onLoadSample,
 }: {
   onIngested: (doc: IngestedDoc) => void;
+  onLoadSample: () => void;
 }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -57,6 +59,14 @@ export function Uploader({
           }}
         />
       </label>
+      <button
+        type="button"
+        onClick={onLoadSample}
+        disabled={busy}
+        className="mt-3 w-full rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2.5 text-sm font-medium text-indigo-300 transition hover:border-indigo-400 hover:text-white disabled:opacity-50"
+      >
+        Or try it instantly with a sample document
+      </button>
       {error && <p className="mt-3 text-sm text-rose-400">{error}</p>}
     </div>
   );

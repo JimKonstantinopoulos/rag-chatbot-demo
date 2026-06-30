@@ -3,9 +3,21 @@
 import { useState } from "react";
 import { Uploader, type IngestedDoc } from "@/components/Uploader";
 import { Chat } from "@/components/Chat";
+import { SAMPLE_DOC } from "@/lib/sample";
+
+type LoadedDoc = IngestedDoc & { suggestions?: string[] };
 
 export default function Home() {
-  const [doc, setDoc] = useState<IngestedDoc | null>(null);
+  const [doc, setDoc] = useState<LoadedDoc | null>(null);
+
+  function loadSample() {
+    setDoc({
+      docId: SAMPLE_DOC.docId,
+      filename: SAMPLE_DOC.filename,
+      chunks: SAMPLE_DOC.chunks,
+      suggestions: SAMPLE_DOC.questions,
+    });
+  }
 
   return (
     <main className="mx-auto flex min-h-screen max-w-2xl flex-col gap-6 px-4 py-10">
@@ -28,7 +40,7 @@ export default function Home() {
       </header>
 
       {!doc ? (
-        <Uploader onIngested={setDoc} />
+        <Uploader onIngested={setDoc} onLoadSample={loadSample} />
       ) : (
         <section className="flex flex-col gap-4">
           <div className="flex items-center justify-between rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-3">
@@ -46,7 +58,7 @@ export default function Home() {
               New document
             </button>
           </div>
-          <Chat docId={doc.docId} />
+          <Chat docId={doc.docId} suggestions={doc.suggestions} />
         </section>
       )}
 

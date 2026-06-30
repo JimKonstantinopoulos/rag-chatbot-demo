@@ -34,7 +34,13 @@ function BotAvatar() {
   );
 }
 
-export function Chat({ docId }: { docId: string }) {
+export function Chat({
+  docId,
+  suggestions,
+}: {
+  docId: string;
+  suggestions?: string[];
+}) {
   const [question, setQuestion] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
   const [busy, setBusy] = useState(false);
@@ -42,9 +48,9 @@ export function Chat({ docId }: { docId: string }) {
   const [openSources, setOpenSources] = useState<number | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
-  async function ask(e: React.FormEvent) {
-    e.preventDefault();
-    const q = question.trim();
+  async function ask(e?: React.FormEvent, preset?: string) {
+    if (e) e.preventDefault();
+    const q = (preset ?? question).trim();
     if (!q || busy) return;
 
     setBusy(true);
@@ -76,12 +82,29 @@ export function Chat({ docId }: { docId: string }) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-5">
         {turns.length === 0 && (
-          <div className="flex items-start gap-2">
-            <BotAvatar />
-            <div className="rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-sm text-slate-300">
-              Ask me anything about the document. I only answer from the source,
-              with citations.
+          <div className="flex flex-col gap-3">
+            <div className="flex items-start gap-2">
+              <BotAvatar />
+              <div className="rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-sm text-slate-300">
+                Ask me anything about the document. I only answer from the
+                source, with citations.
+              </div>
             </div>
+            {suggestions && suggestions.length > 0 && (
+              <div className="flex flex-wrap gap-2 pl-10">
+                {suggestions.map((q, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => ask(undefined, q)}
+                    disabled={busy}
+                    className="rounded-full border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-slate-200 transition hover:border-indigo-400 hover:text-white disabled:opacity-50"
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -155,7 +178,7 @@ export function Chat({ docId }: { docId: string }) {
 
       {error && <p className="text-sm text-rose-400">{error}</p>}
 
-      <form onSubmit={ask} className="flex gap-2">
+      <form onSubmit={(e) => ask(e)} className="flex gap-2">
         <input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
