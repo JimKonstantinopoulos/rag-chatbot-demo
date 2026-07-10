@@ -12,6 +12,11 @@ function client(): Anthropic {
 // Cheap + fast by default; override with ANSWER_MODEL (e.g. claude-sonnet-4-6).
 const ANSWER_MODEL = process.env.ANSWER_MODEL || "claude-haiku-4-5";
 
+/** Verify the key and model id are live. The models endpoint bills no tokens. */
+export async function checkAnthropic(): Promise<void> {
+  await client().models.retrieve(ANSWER_MODEL);
+}
+
 export interface Passage {
   index: number; // 1-based citation number
   content: string;
