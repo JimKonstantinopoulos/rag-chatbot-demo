@@ -2,7 +2,7 @@
   "name": "rag-chatbot-demo",
   "version": "1.0.0",
   "private": true,
-  "description": "Ask Your Docs — a production-style RAG chatbot. Upload a document, ask questions, get answers grounded in the source with citations.",
+  "description": "Ask Your Docs, a production-style RAG chatbot. Upload a document, ask questions, get answers generated from its passages with the sources shown.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

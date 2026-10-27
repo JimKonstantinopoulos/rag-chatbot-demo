@@ -34,9 +34,10 @@ export default function Home() {
           </h1>
         </div>
         <p className="text-sm text-slate-400">
-          Upload a document and ask questions. Answers are grounded in the
-          source with citations. No hallucinations. Built with Next.js,
-          Supabase pgvector, and Claude.
+          Upload a document and ask questions. Answers are generated from
+          passages in your document, with the sources shown so you can check
+          them. It can still make mistakes. Built with Next.js, Supabase
+          pgvector, and Claude.
         </p>
       </header>
 

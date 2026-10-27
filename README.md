@@ -1,8 +1,8 @@
 # Ask Your Docs | RAG Chatbot
 
-Upload a document, ask questions, and get answers **grounded in the source with citations**, not hallucinations. A small but production-shaped Retrieval-Augmented Generation (RAG) app.
+Upload a document, ask questions, and get answers **generated from the document's own passages, with the sources shown** so you can check them. A small but production-shaped Retrieval-Augmented Generation (RAG) app.
 
-> **Why this exists:** most "AI chatbots" happily invent answers. This one retrieves the relevant passages from *your* document first, answers only from them, cites what it used, and says *"I couldn't find that in the document"* when the answer isn't there.
+> **Why this exists:** most "AI chatbots" happily invent answers. This one retrieves the relevant passages from *your* document first, instructs the model to answer only from them and cite what it used, and to say *"I couldn't find that in the document"* when the answer isn't there. It can still make mistakes, which is why the sources are shown.
 
 ## How it works
 
@@ -22,8 +22,12 @@ Ask a question ──► Embed question ──► Vector similarity search (top-
 ```
 
 - **Retrieval:** the question is embedded and matched against the document's chunks with cosine similarity (`pgvector`), scoped to the uploaded document.
-- **Grounding:** only the top passages are sent to the model, with a system prompt that forbids outside knowledge and requires citations.
+- **Grounding:** only the top passages are sent to the model, with a system prompt that instructs the model not to use outside knowledge and to cite the passages it used.
 - **Honesty:** if retrieval finds nothing relevant, the model is instructed to say so rather than guess.
+
+## Data handling (public demo)
+
+The hosted demo is public. Uploaded text is split into chunks, embedded with OpenAI, and stored in the demo's Supabase database, where it is not deleted automatically at present. Each question is embedded with OpenAI, and the best-matching passages are sent to Anthropic to write the answer. Please do not upload confidential or personal documents.
 
 ## Tech stack
 

@@ -7,6 +7,8 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 const MATCH_COUNT = 5;
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 interface MatchRow {
   id: number;
@@ -31,6 +33,11 @@ export async function POST(req: Request) {
         { error: "docId and question are required." },
         { status: 400 },
       );
+    }
+
+    // Document ids are server-issued UUIDs (ingest/route.ts). Reject anything else.
+    if (typeof docId !== "string" || !UUID_RE.test(docId)) {
+      return NextResponse.json({ error: "Invalid document id." }, { status: 400 });
     }
 
     const queryEmbedding = await embedOne(question);

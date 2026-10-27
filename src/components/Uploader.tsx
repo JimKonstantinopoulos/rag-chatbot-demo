@@ -67,6 +67,12 @@ export function Uploader({
       >
         Or try it instantly with a sample document
       </button>
+      <p className="mt-3 text-xs leading-relaxed text-slate-400">
+        Public demo: uploaded text is stored in this demo&apos;s database and
+        is not deleted automatically at present. It is sent to OpenAI to
+        index it, and passages from it are sent to Anthropic to answer your
+        questions. Please do not upload confidential or personal documents.
+      </p>
       {error && <p className="mt-3 text-sm text-rose-400">{error}</p>}
     </div>
   );

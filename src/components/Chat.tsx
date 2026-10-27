@@ -86,8 +86,8 @@ export function Chat({
             <div className="flex items-start gap-2">
               <BotAvatar />
               <div className="rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-sm text-slate-300">
-                Ask me anything about the document. I only answer from the
-                source, with citations.
+                Ask me anything about the document. I answer from its
+                passages and show my sources.
               </div>
             </div>
             {suggestions && suggestions.length > 0 && (
