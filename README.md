@@ -27,7 +27,7 @@ Ask a question ──► Embed question ──► Vector similarity search (top-
 
 ## Data handling (public demo)
 
-The hosted demo is public. Uploaded text is split into chunks, embedded with OpenAI, and stored in the demo's Supabase database, where it is not deleted automatically at present. Each question is embedded with OpenAI, and the best-matching passages are sent to Anthropic to write the answer. Please do not upload confidential or personal documents.
+The hosted demo is public. Uploaded text is split into chunks, embedded with OpenAI, and stored in the demo's Supabase database, where it is not deleted automatically at present. Each question is embedded with OpenAI, then sent with the best-matching passages to Anthropic to write the answer. Please do not upload confidential or personal documents.
 
 ## Tech stack
 
