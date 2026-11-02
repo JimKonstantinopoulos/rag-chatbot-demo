@@ -68,11 +68,14 @@ export function Uploader({
         Or try it instantly with a sample document
       </button>
       <p className="mt-3 text-xs leading-relaxed text-slate-400">
-        Public demo: uploaded text is stored in this demo&apos;s database and
-        is not deleted automatically at present. It is sent to OpenAI to
-        index it. Each question you ask is also sent to OpenAI to search the
+        Public demo: uploaded text is sent to OpenAI to index it and stored
+        in this demo&apos;s database. New uploads expire after 24 hours and
+        are normally deleted from the database within the following 10
+        minutes. Each question you ask is sent to OpenAI to search the
         document, then sent with the best-matching passages to Anthropic to
-        write the answer. Please do not upload confidential or personal
+        write the answer. This deletion applies to the demo&apos;s database
+        only; OpenAI and Anthropic handle what they receive under their own
+        data policies. Please do not upload confidential or personal
         documents.
       </p>
       {error && <p className="mt-3 text-sm text-rose-400">{error}</p>}

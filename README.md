@@ -27,7 +27,7 @@ Ask a question ──► Embed question ──► Vector similarity search (top-
 
 ## Data handling (public demo)
 
-The hosted demo is public. Uploaded text is split into chunks, embedded with OpenAI, and stored in the demo's Supabase database, where it is not deleted automatically at present. Each question is embedded with OpenAI, then sent with the best-matching passages to Anthropic to write the answer. Please do not upload confidential or personal documents.
+The hosted demo is public. Uploaded text is split into chunks, embedded with OpenAI, and stored in the demo's Supabase database. New uploads expire after 24 hours, and a scheduled job that runs every 10 minutes normally deletes them from the database within the following 10 minutes (the sample document is kept). Each question is embedded with OpenAI, then sent with the best-matching passages to Anthropic to write the answer. The database stores the uploaded text and its embeddings only, not file names, questions or answers. This deletion applies to the demo's database only; OpenAI and Anthropic handle what they receive under their own data policies. Please do not upload confidential or personal documents.
 
 ## Tech stack
 

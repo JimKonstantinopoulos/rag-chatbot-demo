@@ -8,6 +8,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
+// The purge runs every 10 minutes; 30 minutes past expiry means about 3 missed runs.
+const RETENTION_GRACE_MINUTES = 30;
+
 interface MatchRow {
   id: number;
 }
@@ -65,6 +68,30 @@ export async function GET() {
     checks.anthropic = describe(err);
   }
 
-  const ok = Object.values(checks).every((v) => v === "ok");
+  // Retention (hosted demo: an expires_at column plus a scheduled purge every 10
+  // minutes): uploads past expiry that the purge has not removed. Reads ids and a
+  // count only, never content. "off" where retention is not set up (no expires_at
+  // column, e.g. a fresh install of supabase/schema.sql); that still passes.
+  try {
+    const cutoff = new Date(Date.now() - RETENTION_GRACE_MINUTES * 60_000).toISOString();
+    const { count, error } = await getSupabase()
+      .from("documents")
+      .select("id", { count: "exact" })
+      .lt("expires_at", cutoff)
+      .neq("doc_id", SAMPLE_DOC.docId)
+      .limit(1);
+    if (error) {
+      if (error.code === "42703") checks.retention = "off";
+      else throw error;
+    } else {
+      checks.retention = count ? `${count} expired upload rows not purged` : "ok";
+    }
+  } catch (err) {
+    checks.retention = describe(err);
+  }
+
+  const ok = Object.entries(checks).every(
+    ([k, v]) => v === "ok" || (k === "retention" && v === "off"),
+  );
   return NextResponse.json({ ok, checks }, { status: ok ? 200 : 503 });
 }

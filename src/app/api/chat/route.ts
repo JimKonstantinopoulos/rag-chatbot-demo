@@ -52,7 +52,8 @@ export async function POST(req: Request) {
     const matches = (data ?? []) as MatchRow[];
     if (matches.length === 0) {
       return NextResponse.json({
-        answer: "I couldn't find anything relevant in the document.",
+        answer:
+          "I couldn't find anything relevant in the document. Uploads expire after 24 hours, so if you uploaded it earlier than that, please upload it again.",
         sources: [],
       });
     }
