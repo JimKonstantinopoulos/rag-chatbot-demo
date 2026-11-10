@@ -35,8 +35,8 @@ export default function Home() {
         </div>
         <p className="text-sm text-slate-400">
           Upload a document and ask questions. Answers are generated from
-          passages in your document, with the sources shown so you can check
-          them. It can still make mistakes. Built with Next.js, Supabase
+          passages in your document, with the passages searched shown so you can
+          check them. It can still make mistakes. Built with Next.js, Supabase
           pgvector, and Claude.
         </p>
       </header>

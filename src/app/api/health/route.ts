@@ -16,12 +16,10 @@ interface MatchRow {
 }
 
 /** Supabase rejects with a plain object, not an Error, so `.message` needs unwrapping. */
+// Public endpoint: details go to the server log, the response says only "failed".
 function describe(err: unknown): string {
-  if (err instanceof Error) return err.message;
-  if (typeof err === "object" && err !== null && "message" in err) {
-    return String((err as { message: unknown }).message);
-  }
-  return String(err);
+  console.error("[health]", err);
+  return "failed";
 }
 
 /**

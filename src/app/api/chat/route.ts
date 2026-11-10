@@ -63,10 +63,11 @@ export async function POST(req: Request) {
       content: m.content,
     }));
 
-    const answer = await answerFromContext(question, passages);
+    const { text: answer, truncated } = await answerFromContext(question, passages);
 
     return NextResponse.json({
       answer,
+      truncated,
       sources: passages.map((p, i) => ({
         index: p.index,
         content: p.content,
@@ -75,7 +76,9 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     console.error("[chat]", err);
-    const message = err instanceof Error ? err.message : "Chat failed.";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Something went wrong answering that. Please try again." },
+      { status: 500 },
+    );
   }
 }

@@ -46,7 +46,7 @@ export function Uploader({
         <span className="font-medium text-slate-100">
           {busy ? "Reading & indexing…" : "Upload a document"}
         </span>
-        <span className="text-sm text-slate-400">PDF, TXT or Markdown</span>
+        <span className="text-sm text-slate-400">PDF, UTF-8 TXT or Markdown</span>
         <input
           type="file"
           accept=".pdf,.txt,.md,text/plain,application/pdf"

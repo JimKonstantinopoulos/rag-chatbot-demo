@@ -35,7 +35,7 @@ Rules:
 export async function answerFromContext(
   question: string,
   passages: Passage[],
-): Promise<string> {
+): Promise<{ text: string; truncated: boolean }> {
   const context = passages
     .map((p) => `[${p.index}] ${p.content}`)
     .join("\n\n");
@@ -49,9 +49,17 @@ export async function answerFromContext(
     messages: [{ role: "user", content: userMessage }],
   });
 
-  return response.content
+  const text = response.content
     .filter((block): block is Anthropic.TextBlock => block.type === "text")
     .map((block) => block.text)
     .join("")
     .trim();
+
+  if (!text) {
+    return {
+      text: "The model did not return an answer. Please try asking again.",
+      truncated: false,
+    };
+  }
+  return { text, truncated: response.stop_reason === "max_tokens" };
 }

@@ -11,6 +11,7 @@ interface Source {
 interface Turn {
   question: string;
   answer: string;
+  truncated?: boolean;
   sources: Source[];
 }
 
@@ -66,7 +67,7 @@ export function Chat({
       if (!res.ok) throw new Error(data.error || "Request failed.");
       setTurns((prev) => [
         ...prev,
-        { question: q, answer: data.answer, sources: data.sources ?? [] },
+        { question: q, answer: data.answer, truncated: data.truncated === true, sources: data.sources ?? [] },
       ]);
       requestAnimationFrame(() =>
         endRef.current?.scrollIntoView({ behavior: "smooth" }),
@@ -87,7 +88,7 @@ export function Chat({
               <BotAvatar />
               <div className="rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-sm text-slate-300">
                 Ask me anything about the document. I answer from its
-                passages and show my sources.
+                passages and show the passages I searched.
               </div>
             </div>
             {suggestions && suggestions.length > 0 && (
@@ -123,6 +124,11 @@ export function Chat({
               <BotAvatar />
               <div className="max-w-[80%] rounded-2xl rounded-bl-sm bg-slate-800 px-4 py-3 text-sm leading-relaxed text-slate-100 shadow-sm">
                 <p className="whitespace-pre-wrap">{turn.answer}</p>
+                {turn.truncated && (
+                  <p className="mt-2 text-xs text-amber-300">
+                    This answer was cut off at the length limit, so it may be incomplete. Try a narrower question.
+                  </p>
+                )}
                 {turn.sources.length > 0 && (
                   <div className="mt-2 border-t border-slate-700/60 pt-2">
                     <button
@@ -133,9 +139,14 @@ export function Chat({
                       className="text-xs font-medium text-indigo-300 hover:underline"
                     >
                       {openSources === i
-                        ? "Hide sources"
-                        : `📎 Sources (${turn.sources.length})`}
+                        ? "Hide passages"
+                        : `📎 Passages searched (${turn.sources.length})`}
                     </button>
+                    {openSources === i && (
+                      <p className="mt-2 text-xs text-slate-400">
+                        The closest passages found for this question. They are not checked against the answer.
+                      </p>
+                    )}
                     {openSources === i && (
                       <ul className="mt-2 flex flex-col gap-2">
                         {turn.sources.map((s) => (
